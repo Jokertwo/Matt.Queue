@@ -10,8 +10,7 @@ public class CallerQueue {
         if (first == null) {
             first = newLink;
         } else {
-            newLink.setNext(first);
-            first = newLink;
+
         }
     }
 
@@ -25,7 +24,7 @@ public class CallerQueue {
 
     public void removeFirst() {
         if (first != null) {
-            first = first.next;
+
         } else {
             System.out.println("Remove call on empty queue. Probably error, continuing...");
         }
