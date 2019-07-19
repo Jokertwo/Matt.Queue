@@ -2,16 +2,16 @@ package matt.queue;
 
 public class CallerQueue {
 
-    private Link first, last;
+    private Link first;
 
     public void add(IncomingCall call) {
-        Link nl = new Link();
-        nl.data = call;
+        Link newLink = new Link();
+        newLink.data = call;
         if (first == null) {
-            first = nl;
-            last = nl;
+            first = newLink;
         } else {
-            last = nl;
+            newLink.setNext(first);
+            first = newLink;
         }
     }
 
