@@ -1,17 +1,17 @@
 package matt.queue;
 
-public class CallerQueue {
+public class OperatorQueue {
 
-    private Link first;
+    private OperatorLink first;
 
-    public void add(IncomingCall call) {
-        Link newLink = new Link();
-        newLink.setData(call);
+    public void add(FreeOperator operator) {
+        OperatorLink newLink = new OperatorLink();
+        newLink.setData(operator);
 
         if (first == null) {
             first = newLink;
         } else {
-            Link tempLink = first;
+            OperatorLink tempLink = first;
             while (tempLink.getNext() != null) {
                 tempLink = tempLink.getNext();
             }
@@ -19,7 +19,7 @@ public class CallerQueue {
         }
     }
 
-    public IncomingCall get() {
+    public FreeOperator get() {
         if (first == null) {
             return null;
         } else {
@@ -31,7 +31,9 @@ public class CallerQueue {
         if (first != null) {
             first = first.getNext();
         } else {
-            System.out.println("Remove call on empty queue. Probably error, continuing...");
+            System.out.println("Remove operator on empty queue. Probably error, continuing...");
         }
     }
+
+
 }

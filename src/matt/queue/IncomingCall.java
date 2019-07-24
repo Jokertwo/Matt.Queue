@@ -1,6 +1,7 @@
 package matt.queue;
 
 public class IncomingCall {
+
     private int callingNumber;
     private int time; // the time from the beginning of the shift when the call arrived
 

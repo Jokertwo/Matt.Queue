@@ -5,7 +5,6 @@ public class Dispatcher {
     private CallerQueue callerQueue;
     private OperatorQueue operatorQueue;
 
-
     public Dispatcher() {
         this.callerQueue = new CallerQueue();
         this.operatorQueue = new OperatorQueue();
@@ -22,6 +21,15 @@ public class Dispatcher {
 
     public void dispatchCall() {
 
+        if(callerQueue.get() != null && operatorQueue.get() != null) {
+            assignCall(callerQueue.get(), operatorQueue.get());
+
+            callerQueue.removeFirst();
+            operatorQueue.removeFirst();
+        }
+        else {
+            System.out.println("Couldn't make a match.. Maybe one queue is emtpy.");
+        }
     }
 
     private void assignCall(IncomingCall call, FreeOperator operator) {
