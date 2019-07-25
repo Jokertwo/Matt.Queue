@@ -4,6 +4,7 @@ public class Dispatcher {
 
     private CallerQueue callerQueue;
     private OperatorQueue operatorQueue;
+    private LongestWaiter longestWaiter = new LongestWaiter(0, 0);
 
     public Dispatcher() {
         this.callerQueue = new CallerQueue();
@@ -19,22 +20,51 @@ public class Dispatcher {
         operatorQueue.add(new FreeOperator(name, time));
     }
 
-    public void dispatchCall() {
+    /**
+     * match the first call and operator from their queues, if they exist
+     * @return String, either Couldn't make a match, or the result from assignCall - message is passed to the logger
+     */
+    public void dispatchCall(Logger log) {
+
+
 
         if(callerQueue.get() != null && operatorQueue.get() != null) {
-            assignCall(callerQueue.get(), operatorQueue.get());
+
+            log.log(assignCall(callerQueue.get(), operatorQueue.get()));
 
             callerQueue.removeFirst();
             operatorQueue.removeFirst();
         }
         else {
-            System.out.println("Couldn't make a match.. Maybe one queue is emtpy.");
+
+            log.log("Couldn't make a match.. Maybe one queue is empty." + System.lineSeparator());
+
         }
     }
 
-    private void assignCall(IncomingCall call, FreeOperator operator) {
-        System.out.println(operator.getName() + " is answering call from +420 " + call.getCallingNumber());
-        System.out.println("The caller has waited for " + Math.max(0, operator.getTime() - call.getTime()) + " seconds.");
+    /**
+     * Calculates how much time the caller actually waited and puts this into a string
+     * @param call
+     * @param operator
+     * @return the result of this string
+     */
+    private String assignCall(IncomingCall call, FreeOperator operator) {
+
+        int waitTime = Math.max(0, operator.getTime() - call.getTime());
+
+        String message = operator.getName() + " is answering call from +420 " + call.getCallingNumber() + ". The caller has waited for " + waitTime + " seconds." + System.lineSeparator();
+        System.out.println(message);
+
+        //Test if the current caller's wait time was greater than the longest waiter yet. If it's true, set this caller as the longest waiter yet.
+        if (waitTime > longestWaiter.getTotalWaitTime()){
+            longestWaiter.setCallNumber(call.getCallingNumber());
+            longestWaiter.setTotalWaitTime(waitTime);
+        }
+
+        return message;
     }
 
+    public LongestWaiter getLongestWaiter() {
+        return longestWaiter;
+    }
 }
